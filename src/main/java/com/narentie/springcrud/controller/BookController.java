@@ -1,39 +1,54 @@
 package com.narentie.springcrud.controller;
 
+import com.narentie.springcrud.service.BookService;
 import com.narentie.springcrud.entity.Book;
-import com.narentie.springcrud.exception.NotSupportedApiCallException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/books")
+@RequiredArgsConstructor
 public class BookController {
+
+    private final BookService bookService;
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
-        throw new NotSupportedApiCallException("GET /books is not supported");
+        return ResponseEntity.ok((bookService.getAll()));
     }
 
     @PostMapping
     public ResponseEntity<String> addBook(@RequestBody Book book) {
-        throw new NotSupportedApiCallException("POST /books is not supported");
+        bookService.add(book);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateBookById(@RequestBody Book book) {
+        bookService.update(book);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable("id") Long id) {
-        throw new NotSupportedApiCallException("GET /books/" + id + " is not supported");
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBookById(@PathVariable("id") Long id, @RequestBody Book book) {
-        throw new NotSupportedApiCallException("PUT /books/" + id + " is not supported");
+        var targetBook = bookService
+                .getById(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                            "Requested book [id:" + id + "] does not exist"));
+        return ResponseEntity.ok(targetBook);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBook(@PathVariable("id") Long id) {
-        throw new NotSupportedApiCallException("DELETE /books/" + id + " is not supported");
+    public ResponseEntity<Book> deleteBook(@PathVariable("id") Long id) {
+        var removedBook = bookService
+                .remove(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Requested book [id:" + id + "] does not exist"));
+        return ResponseEntity.ok(removedBook);
     }
 
 }
