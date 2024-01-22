@@ -3,8 +3,11 @@ package com.narentie.springcrud.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.List;
+
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -23,5 +26,15 @@ public class Book {
 
     @Column(name = "iban")
     private String iban;
+
+    @ManyToOne
+    private Author author;
+
+    @ManyToOne
+    private Publisher publisher;
+
+    @OneToMany
+    @JoinColumn(name = "book_id")
+    private List<Page> pages;
 
 }
