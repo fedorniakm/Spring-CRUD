@@ -3,9 +3,7 @@ package com.narentie.springcrud.service;
 import com.narentie.springcrud.entity.Book;
 import com.narentie.springcrud.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +15,11 @@ public class BookService {
     private final BookRepository bookRepository;
 
     public List<Book> getAll() {
-        return bookRepository.getAll();
+        return bookRepository.findAll();
     }
 
     public Optional<Book> getById(final Long id) {
-        return bookRepository.getById(id);
+        return bookRepository.findById(id);
     }
 
     public void add(Book book) {
@@ -32,7 +30,7 @@ public class BookService {
         bookRepository.save(book);
     }
 
-    public Optional<Book> remove(final Long id) {
-        return bookRepository.remove(id);
+    public void delete(final Long id) {
+        bookRepository.deleteById(id);
     }
 }

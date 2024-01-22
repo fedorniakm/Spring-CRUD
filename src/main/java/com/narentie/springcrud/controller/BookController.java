@@ -43,12 +43,9 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Book> deleteBook(@PathVariable("id") Long id) {
-        var removedBook = bookService
-                .remove(id)
-                .orElseThrow(() -> new NoSuchElementException(
-                        "Requested book [id:" + id + "] does not exist"));
-        return ResponseEntity.ok(removedBook);
+    public ResponseEntity<String> deleteBook(@PathVariable("id") Long id) {
+        bookService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
 }

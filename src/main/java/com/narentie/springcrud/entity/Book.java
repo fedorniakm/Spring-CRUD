@@ -1,14 +1,15 @@
 package com.narentie.springcrud.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Entity
+@Table(name = "book")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
+@EqualsAndHashCode
+@Builder
 public class Book {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
